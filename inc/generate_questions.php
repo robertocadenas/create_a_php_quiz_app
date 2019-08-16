@@ -52,8 +52,8 @@ function createNewQuestions($totalQuestions, $minNum, $maxNum) {
         $correctAnswer = $leftAdder + $rightAdder;
 
         // Get incorrect answers within 10 numbers either way of correct answer
-        $firstIncorrectAnswer = rand($correctAnswer-10, $correctAnswer-1);
-        $secondIncorrectAnswer = rand($correctAnswer+1, $correctAnswer+10);
+        $firstIncorrectAnswer = rand($correctAnswer-10, $correctAnswer+10);
+        $secondIncorrectAnswer = rand($correctAnswer-10, $correctAnswer+10);
 
         // Add question and answer to questions array
         $newQuestions[] =

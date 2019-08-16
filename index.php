@@ -27,26 +27,28 @@ if(isset($_POST['answer']) && isset($_SESSION['theLastRightAnswer'])) {
     }
 }
 
-//The second control is watching if we need a new array of questions. because the user is starting a new quiz o because it is finished.
+//The second control is updated the final score every time the array of questions is completed.
+if (isset($_SESSION['controlQuestion']) == ($totalQuestions-1)) {
+    $_SESSION['finalScore'] = $_SESSION['numRightQuestions'];
+}
+
+//The third control is watching if we need a new array of questions. because the user is starting a new quiz o because it is finished.
 //To obtain the new questions we call shuffleQuestionInUse() that it is in generate_questions.php
-//The counters star from 0.
+//The counters start from 0.
 //The new array of questions is loaded in the Session.
 //If we are in the middle of the quiz, we keep adding 1 to the counter
 
 if (!isset($_SESSION['controlQuestion']) || $_SESSION['controlQuestion'] == ($totalQuestions-1)) {
     $questionsInUse = shuffleQuestionInUse($questions); // generate de array with the quizz
     $_SESSION['questionsInUse'] = $questionsInUse; // loading in the Session
-    $_SESSION['controlQuestion'] = 0; // star the counter for questions
-    $_SESSION['numRightQuestions'] = 0; // star the counter for questions
+    $_SESSION['controlQuestion'] = 0; // start the counter for questions
+    $_SESSION['numRightQuestions'] = 0; // start the counter for questions
 } else {
     $_SESSION['controlQuestion'] += 1;
     //$questionsInUse = $_SESSION['questionsInUse']; // recovering from the Session
 }
 
-//The third control is updated the final score every time the array of questions is completed.
-if ($_SESSION['controlQuestion'] == ($totalQuestions-1)) {
-    $_SESSION['finalScore'] = $_SESSION['numRightQuestions'];
-}
+
 
 //We show the next question using the session.
 //To change the possition of the right and wrong answers we call the shuffleButtons() in generate_questions.php
@@ -60,7 +62,7 @@ $_SESSION['theLastRightAnswer'] = $values[3];
 //Now we have all data, so we can complete the first part of the message.
 //It will be available when the page will be loaded and call showToast()
 if(!isset($_POST['answer'])) {
-    $initialMessage = "Star the quiz!";
+    $initialMessage = "Start the quiz!";
 } elseif ($controlQuestion == 0) {
     $initialMessage = "The last game you had: ";
     $initialMessage .= $_SESSION['finalScore'];
