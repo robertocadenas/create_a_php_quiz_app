@@ -55,6 +55,11 @@ function createNewQuestions($totalQuestions, $minNum, $maxNum) {
         $firstIncorrectAnswer = rand($correctAnswer-10, $correctAnswer+10);
         $secondIncorrectAnswer = rand($correctAnswer-10, $correctAnswer+10);
 
+        // Don't repeat the incorrect answers.
+        while ($firstIncorrectAnswer == $secondIncorrectAnswer) {
+            $secondIncorrectAnswer = rand($correctAnswer-10, $correctAnswer+10);
+        }
+
         // Add question and answer to questions array
         $newQuestions[] =
             [
@@ -67,59 +72,4 @@ function createNewQuestions($totalQuestions, $minNum, $maxNum) {
     }
 
     return $newQuestions;
-}
-
-function showToast($initialMessage) {
-    $htmlString = $initialMessage;
-    $htmlString .= " You have: ";
-    $htmlString .= $_SESSION['numRightQuestions'];
-    $htmlString .= " points";
-    return $htmlString;
-}
-
-function selectColor() {
-    // from https://www.canva.com/colors/color-wheel/
-    // We use two arrays of colors to keep the contrast between backgrounds and letters.
-    $colorsBackground = ['#da3225', '#e41b8d', '#a314eb', '#2225dd', '#699671', '#8e7c71'];
-    $colorsLetters = ['#c2c7d3', '#d8f7fb', '#c2f7d9', '#D9C2F7', '#F7D9C2', '#FDE8FB'];
-
-    $colorSelected = array();
-    $colorSelected['colorsBackground_body'] = $colorsBackground[rand(0, count($colorsBackground)-1)];
-    $colorSelected['colorsBackground_btn'] = $colorsBackground[rand(0, count($colorsBackground)-1)];
-    $colorSelected['colorsLetters'] = $colorsLetters[rand(0, count($colorsLetters)-1)];
-
-    // Different colors for background and button.
-    while ($colorSelected['colorsBackground_body'] == $colorSelected['colorsBackground_btn']) {
-        $colorSelected['colorsBackground_btn'] = $colorsBackground[rand(0, count($colorsBackground)-1)];
-    }
-
-    return $colorSelected;
-}
-
-//They content for the <style> in index.php
-function change_color() {
-    $colorSelected = selectColor();
-
-    $htmlStyle = "body { background-color: ";
-    $htmlStyle .= $colorSelected['colorsBackground_body'] . ';';
-    $htmlStyle .= "}";
-    $htmlStyle .= ".quiz { color: ";
-    $htmlStyle .= $colorSelected['colorsLetters']. ';';
-    $htmlStyle .= "}";
-    $htmlStyle .= ".breadcrumbs { color: ";
-    $htmlStyle .= $colorSelected['colorsLetters'] . ';';
-    $htmlStyle .= "}";
-    $htmlStyle .= ".btn { background-color: ";
-    $htmlStyle .= $colorSelected['colorsBackground_btn'] . ';';
-    $htmlStyle .= "color: ";
-    $htmlStyle .= $colorSelected['colorsLetters'] . ';';
-    $htmlStyle .= "}";
-    $htmlStyle .= "#snackbar { background-color: ";
-    $htmlStyle .= $colorSelected['colorsBackground_btn'] . ';';
-    $htmlStyle .= "color: ";
-    $htmlStyle .= $colorSelected['colorsLetters'] . ';';
-    $htmlStyle .= "}";
-
-
-    return $htmlStyle;
 }
