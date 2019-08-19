@@ -51,12 +51,26 @@ function createNewQuestions($totalQuestions, $minNum, $maxNum) {
         // Calculate correct answer
         $correctAnswer = $leftAdder + $rightAdder;
 
+        //Check it is unique correct answer in the array
+        foreach($newQuestions as $question){
+          while ($correctAnswer == $question["correctAnswer"]) {
+              $leftAdder = rand($minNum, $maxNum);
+              $rightAdder = rand($minNum, $maxNum);
+              $correctAnswer = $leftAdder + $rightAdder;
+          }
+        }
+
         // Get incorrect answers within 10 numbers either way of correct answer
         $firstIncorrectAnswer = rand($correctAnswer-10, $correctAnswer+10);
         $secondIncorrectAnswer = rand($correctAnswer-10, $correctAnswer+10);
 
-        // Don't repeat the incorrect answers.
-        while ($firstIncorrectAnswer == $secondIncorrectAnswer) {
+        // Don't repeat the incorrect answers. 2 Steps
+        // 1st Not equal the right answer
+        while ($firstIncorrectAnswer == $correctAnswer) {
+            $firstIncorrectAnswer = rand($correctAnswer-10, $correctAnswer+10);
+        }
+        //2nd Unique incorrect answers
+        while ($secondIncorrectAnswer == $firstIncorrectAnswer || $secondIncorrectAnswer == $correctAnswer) {
             $secondIncorrectAnswer = rand($correctAnswer-10, $correctAnswer+10);
         }
 
